@@ -24,11 +24,22 @@ function New-Budget {
     while ($i -lt $days) {
         $data_string = $data_string +
 @"
-        `n,,,"=TEXT(TODAY()+$i,""mm/dd/yyyy"")",=c2+(e$($i+1)-f$($i+1)),0,
+    `n    ,,,"=TEXT(TODAY()+$i,""mm/dd/yyyy"")",=c2+(e$($i+1)-f$($i+1)),0,
 "@
         $i = $i + 1
     }
-    Write-Host $data_string
+
+    #Write-Host $data_string
     $data = ConvertFrom-Csv $data_string
-    $data | Export-Excel -Path './e.xlsx'
+    $excel = $data | Export-Excel -Path './e.xlsx' -PassThru
+
+    $ws = $excel.Sheet1
+    #Write-Host "ws type: $($ws.GetType())"
+    #Write-Host "ws members:`n"
+    #Get-Member -InputObject $ws
+
+    1,3,5,6,7 | Set-ExcelColumn -Worksheet $ws -NumberFormat 'Currency'
+    1..7 | Set-ExcelColumn -Worksheet $ws -AutoFit
+    $ws.Column(4).Width = 11
+    $excel | Close-ExcelPackage -Show
 }
