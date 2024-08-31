@@ -31,7 +31,14 @@ function New-Budget {
 
     #Write-Host $data_string
     $data = ConvertFrom-Csv $data_string
-    $excel = $data | Export-Excel -Path './e.xlsx' -PassThru
+
+    $filename = './e.xlsx'
+
+    if (Test-Path $filename) {
+       Remove-Item $filename
+    }
+
+    $excel = $data | Export-Excel -Path $filename -PassThru
 
     $ws = $excel.Sheet1
     #Write-Host "ws type: $($ws.GetType())"
