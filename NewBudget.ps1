@@ -32,11 +32,13 @@ function New-Budget {
     #Write-Host $data_string
     $data = ConvertFrom-Csv $data_string
 
-    $filename = './e.xlsx'
-
-    if (Test-Path $filename) {
-       Remove-Item $filename
-    }
+    $j = 0
+    do {
+        $j = $j + 1
+        $filename = "e$j.xlsx"
+        Write-Host "Found: $filename"
+    } while (Test-Path $filename)
+    Write-Host "Used: $filename"
 
     $excel = $data | Export-Excel -Path $filename -PassThru
 
