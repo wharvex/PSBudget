@@ -1,3 +1,4 @@
+# TODO: The initial spent param doesn't accept decimals
 function New-Budget {
     [CmdletBinding(SupportsShouldProcess)]
     param
@@ -33,6 +34,7 @@ function New-Budget {
     $data = ConvertFrom-Csv $data_string
 
     $j = 0
+    # TODO: fix this
     do {
         $j = $j + 1
         $filename = "e$j.xlsx"
@@ -51,4 +53,9 @@ function New-Budget {
     1..7 | Set-ExcelColumn -Worksheet $ws -AutoFit
     $ws.Column(4).Width = 11
     $excel | Close-ExcelPackage -Show
+}
+
+# For debugging in VS Code.
+if ($MyInvocation.InvocationName -ne ".") {
+    New-Note
 }
